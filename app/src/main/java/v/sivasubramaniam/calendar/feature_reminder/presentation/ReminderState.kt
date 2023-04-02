@@ -7,10 +7,12 @@ data class ReminderState(
     val dayOfMonth: Int = 14,
     val hour: Int = 12,
     val minute: Int = 18,
+    val account: String = "sivamani123121@gmail.com",
     val repetition: String = "Does not repeat",
 
-    val allDay: Boolean = false,
+    val showAccountsDialog: Boolean = false,
+    val allDay: Boolean = true,
     val showDatePicker: Boolean = false,
     val showTimePicker: Boolean = false,
-    val showRepetition: Boolean = false,
+    val showRepetitionDialog: Boolean = false,
 )

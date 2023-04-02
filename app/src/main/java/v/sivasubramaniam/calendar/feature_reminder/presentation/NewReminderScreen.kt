@@ -6,26 +6,34 @@ import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import v.sivasubramaniam.calendar.R
 import v.sivasubramaniam.calendar.core.presentation.components.SimpleTextField
 import v.sivasubramaniam.calendar.core.presentation.ui.theme.*
 import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.*
+import v.sivasubramaniam.calendar.feature_reminder.presentation.components.AccountItem
 import v.sivasubramaniam.calendar.feature_reminder.presentation.components.RepetitionItem
 import java.util.*
 
@@ -35,13 +43,19 @@ fun NewReminderScreen(
     viewModel: ReminderViewModel = hiltViewModel()
 ) {
     val reminderState = viewModel.state.value
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        delay(200)
+        focusRequester.requestFocus()
+    }
 
     val context = LocalContext.current
-    val calender = Calendar.getInstance()
+    val calendar = Calendar.getInstance()
 
-    val year = calender[Calendar.YEAR]
-    val month = calender[Calendar.MONTH]
-    val dayOfMonth = calender[Calendar.DAY_OF_MONTH]
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH]
+    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
 
     val datePicker = DatePickerDialog(
         context,
@@ -52,10 +66,10 @@ fun NewReminderScreen(
         }, year, month, dayOfMonth
     )
 
-    datePicker.datePicker.minDate = calender.timeInMillis
+    datePicker.datePicker.minDate = calendar.timeInMillis
 
-    val hour = calender[Calendar.HOUR_OF_DAY]
-    val minute = calender[Calendar.MINUTE]
+    val hourOfDay = calendar[Calendar.HOUR_OF_DAY]
+    val minute = calendar[Calendar.MINUTE]
 
     val timePicker = TimePickerDialog(
         context,
@@ -63,7 +77,7 @@ fun NewReminderScreen(
             viewModel.onEvent(
                 PickedTime(selectedHour, selectedMinute)
             )
-        }, hour, minute, false
+        }, hourOfDay, minute, false
     )
 
     Scaffold(
@@ -101,7 +115,8 @@ fun NewReminderScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(padding)
+                .verticalScroll(state = rememberScrollState()),
         ) {
             SimpleTextField(
                 modifier = Modifier
@@ -112,7 +127,8 @@ fun NewReminderScreen(
                 style = MaterialTheme.typography.h5,
                 onValueChange = {
                     viewModel.onEvent(EnteredTitle(it))
-                }
+                },
+                focusRequester = focusRequester
             )
             Divider(
                 modifier = Modifier
@@ -123,7 +139,7 @@ fun NewReminderScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { }
+                    .clickable { viewModel.onEvent(ToggleAccounts) }
                     .padding(horizontal = 20.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -138,7 +154,7 @@ fun NewReminderScreen(
                         text = "Reminders"
                     )
                     Text(
-                        text = "sivamani123121@gmail.com",
+                        text = reminderState.account,
                         style = MaterialTheme.typography.caption
                     )
                 }
@@ -149,6 +165,39 @@ fun NewReminderScreen(
                     .padding(vertical = 8.dp),
                 color = CapeCodDark
             )
+            if (reminderState.showAccountsDialog) {
+                val accounts = listOf(
+                    "sivamani123121@gmail.com",
+                    "patrickbateman@batmail.com",
+                    "mustafizurrahman@imail.com",
+                    "jakewharton@mmail.com",
+                    "dwaynejohnson@dj.com",
+                )
+                Dialog(
+                    onDismissRequest = { viewModel.onEvent(ToggleAccounts) }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(Shark)
+                            .padding(vertical = 10.dp)
+                            .verticalScroll(state = rememberScrollState()),
+                    ) {
+                        Text(
+                            text = "Calendar",
+                            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+                            fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        accounts.forEach {
+                            AccountItem(
+                                text = it,
+                                onClick = { viewModel.onEvent(ChoseAccount(it)) }
+                            )
+                        }
+                    }
+                }
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -183,7 +232,7 @@ fun NewReminderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { datePicker.show() }
-                    .padding(start = 60.dp,  top = 10.dp, end = 16.dp, bottom = 10.dp)
+                    .padding(start = 60.dp, top = 10.dp, end = 16.dp, bottom = 10.dp)
             ) {
                 Text(
                     text = "${reminderState.dayOfMonth}/${reminderState.month + 1}/${reminderState.year}",
@@ -224,7 +273,7 @@ fun NewReminderScreen(
                     .padding(vertical = 8.dp),
                 color = CapeCodDark
             )
-            if (reminderState.showRepetition) {
+            if (reminderState.showRepetitionDialog) {
                 val repeatOptions = listOf(
                     "Does not repeat",
                     "Every day",
@@ -233,7 +282,6 @@ fun NewReminderScreen(
                     "Every year",
                     "Custom..."
                 )
-
                 Dialog(
                     onDismissRequest = { viewModel.onEvent(ToggleRepetition) }
                 ) {

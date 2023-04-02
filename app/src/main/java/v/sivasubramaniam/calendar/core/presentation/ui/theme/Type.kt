@@ -15,6 +15,19 @@ val Inter = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
 
+    h5 = TextStyle(
+        color = Pumice,
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp,
+        letterSpacing = 0.sp
+    ),
+    subtitle1 = TextStyle(
+        color = Mercury,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        letterSpacing = 0.15.sp
+    ),
     body1 = TextStyle(
         color = Mercury,
         fontFamily = Inter,
@@ -22,13 +35,6 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    ),
-    h5 = TextStyle(
-        color = Pumice,
-        fontFamily = Inter,
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
-        letterSpacing = 0.sp
     ),
     caption = TextStyle(
         color = Pumice,

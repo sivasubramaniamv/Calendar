@@ -22,6 +22,9 @@ class ReminderServiceImpl @Inject constructor(
         } catch (e: ResponseException) {
             println(e.response.status)
             null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 
@@ -32,6 +35,9 @@ class ReminderServiceImpl @Inject constructor(
             }
         } catch (e: ResponseException) {
             println(e.response.status)
+            emptyList()
+        } catch (e: Exception) {
+            e.printStackTrace()
             emptyList()
         }
     }
@@ -47,6 +53,9 @@ class ReminderServiceImpl @Inject constructor(
         } catch (e: ResponseException) {
             println(e.response.status)
             e.response.status
+        } catch (e: Exception) {
+            e.printStackTrace()
+            HttpStatusCode(408, "Internet connection not available")
         }
     }
 
@@ -58,6 +67,9 @@ class ReminderServiceImpl @Inject constructor(
         } catch (e: ResponseException) {
             println(e.response.status)
             e.response.status
+        } catch (e: Exception) {
+            e.printStackTrace()
+            HttpStatusCode(408, "Internet connection not available")
         }
     }
 }

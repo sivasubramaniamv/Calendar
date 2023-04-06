@@ -33,6 +33,12 @@ val RiverBed = Color(0xFF495262)
 val Silver = Color(0xFFb9b9b9)
 val DoveGray = Color(0xFF636363)
 
+// Check Box
+val SteelBlue = Color(0xFF5682b5)
+val BlueMarguerite = Color(0xFF6777bf)
+val Boulder = Color(0xFF767676)
+val AquaForest = Color(0xFF67ab85)
+val BreakerBay = Color(0xFF579b90)
 
 // Light Theme
 // Primary

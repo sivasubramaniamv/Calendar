@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import v.sivasubramaniam.calendar.core.presentation.ui.theme.CalendarTheme
+import v.sivasubramaniam.calendar.feature_home.presentation.EventListScreen
 import v.sivasubramaniam.calendar.feature_reminder.presentation.NewReminderScreen
 
 @AndroidEntryPoint
@@ -27,12 +28,12 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.NewReminderScreen.route
+                        startDestination = Screen.EventListScreen.route
                     ) {
                         composable(
                             route = Screen.EventListScreen.route
                         ) {
-                            //EventListScreen(navController)
+                            EventListScreen(navController)
                         }
                         composable(
                             route = Screen.NewReminderScreen.route

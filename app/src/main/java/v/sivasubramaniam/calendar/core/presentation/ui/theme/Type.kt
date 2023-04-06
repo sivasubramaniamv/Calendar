@@ -12,6 +12,10 @@ val Inter = FontFamily(
     Font(R.font.inter)
 )
 
+val RedHatDisplay = FontFamily(
+    Font(R.font.red_hat_display)
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
 

@@ -28,6 +28,7 @@ val Typography = Typography(
     ),
     subtitle1 = TextStyle(
         color = Mercury,
+        fontFamily = Inter,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         letterSpacing = 0.15.sp

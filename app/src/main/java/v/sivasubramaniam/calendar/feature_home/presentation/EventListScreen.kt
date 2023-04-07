@@ -1,8 +1,10 @@
 package v.sivasubramaniam.calendar.feature_home.presentation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -10,10 +12,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -34,35 +40,64 @@ import v.sivasubramaniam.calendar.feature_home.presentation.components.ImageOpti
 fun EventListScreen(
     navController: NavController
 ) {
-    val scaffoldState = rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
+    val scaffoldState =
+        rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val coroutineSCope = rememberCoroutineScope()
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = {
-                    Row {
-                        Text(text = "April")
-                        Icon(
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = "Open Monthly Calendar"
-                        )
-                    }
-                },
-                navigationIcon = {
+                backgroundColor = SharkVariant
+            ) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                     IconButton(onClick = {
                         coroutineSCope.launch {
                             scaffoldState.drawerState.open()
                         }
-                    }){
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Menu,
-                            contentDescription = "Drawer Menu"
+                            contentDescription = "Drawer Menu",
+                            tint = Pumice
                         )
                     }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "April",
+                        fontSize = MaterialTheme.typography.h6.fontSize,
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Open Monthly Calendar",
+                        tint = Pumice
+                    )
                 }
-            )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search Events",
+                        tint = Pumice
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.today),
+                        contentDescription = "Today",
+                        tint = Pumice
+                    )
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.profile_picture),
+                    contentDescription = "Account",
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .size(32.dp)
+                        .clip(CircleShape)
+                )
+            }
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -83,7 +118,7 @@ fun EventListScreen(
                     .fillMaxSize()
                     .background(color = Shark)
                     .verticalScroll(rememberScrollState())
-            ){
+            ) {
                 Text(
                     text = buildAnnotatedString {
                         withStyle(

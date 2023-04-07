@@ -40,6 +40,9 @@ val Boulder = Color(0xFF767676)
 val AquaForest = Color(0xFF67ab85)
 val BreakerBay = Color(0xFF579b90)
 
+// TopBar
+val SharkVariant = Color(0xFF2d2e31)
+
 // Light Theme
 // Primary
 val ScienceBlue = Color(0XFF0b57d0)

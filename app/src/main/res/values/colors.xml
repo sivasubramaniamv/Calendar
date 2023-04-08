@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- Light Theme -->
+
+    <!-- Dark Theme -->
     <color name="mineshaft">#FF1F1F1F</color>
 </resources>

@@ -84,6 +84,7 @@ fun NewReminderScreen(
         topBar = {
             TopAppBar(
                 title = {},
+                modifier = Modifier.statusBarsPadding(),
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(

@@ -48,7 +48,8 @@ fun EventListScreen(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                backgroundColor = SharkVariant
+                backgroundColor = SharkVariant,
+                contentPadding = PaddingValues(top = 40.dp, start = 8.dp, end = 16.dp)
             ) {
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                     IconButton(onClick = {
@@ -62,7 +63,7 @@ fun EventListScreen(
                             tint = Pumice
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "April",
                         fontSize = MaterialTheme.typography.h6.fontSize,
@@ -88,12 +89,11 @@ fun EventListScreen(
                         tint = Pumice
                     )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Image(
                     painter = painterResource(id = R.drawable.profile_picture),
                     contentDescription = "Account",
                     modifier = Modifier
-                        .padding(end = 12.dp)
                         .size(32.dp)
                         .clip(CircleShape)
                 )
@@ -102,6 +102,7 @@ fun EventListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate(Screen.NewReminderScreen.route) },
+                modifier = Modifier.navigationBarsPadding(),
                 shape = RoundedCornerShape(30),
                 backgroundColor = MaterialTheme.colors.secondary,
                 contentColor = MaterialTheme.colors.onSecondary
@@ -117,6 +118,7 @@ fun EventListScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color = Shark)
+                    .systemBarsPadding()
                     .verticalScroll(rememberScrollState())
             ) {
                 Text(

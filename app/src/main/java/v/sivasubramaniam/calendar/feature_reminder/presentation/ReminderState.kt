@@ -2,11 +2,13 @@ package v.sivasubramaniam.calendar.feature_reminder.presentation
 
 data class ReminderState(
     val title: String = "",
-    val year: Int = 2023,
-    val month: Int = 2,
-    val dayOfMonth: Int = 14,
-    val hour: Int = 12,
-    val minute: Int = 18,
+    val year: Int = 0,
+    val month: Int = 0,
+    val dayOfMonth: Int = 0,
+    val dateString: String = "",
+    val hour: Int = 0,
+    val minute: Int = 0,
+    val timeString: String = "",
     val account: String = "sivamani123121@gmail.com",
     val repetition: String = "Does not repeat",
 

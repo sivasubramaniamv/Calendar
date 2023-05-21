@@ -5,11 +5,28 @@ import android.app.TimePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
@@ -31,11 +48,23 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import v.sivasubramaniam.calendar.R
 import v.sivasubramaniam.calendar.core.presentation.components.SimpleTextField
-import v.sivasubramaniam.calendar.core.presentation.ui.theme.*
-import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.*
+import v.sivasubramaniam.calendar.core.presentation.ui.theme.CapeCodDark
+import v.sivasubramaniam.calendar.core.presentation.ui.theme.DoveGray
+import v.sivasubramaniam.calendar.core.presentation.ui.theme.Pumice
+import v.sivasubramaniam.calendar.core.presentation.ui.theme.RiverBed
+import v.sivasubramaniam.calendar.core.presentation.ui.theme.Shark
+import v.sivasubramaniam.calendar.core.presentation.ui.theme.Silver
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.ChoseAccount
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.ChoseRepetition
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.EnteredTitle
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.PickedDate
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.PickedTime
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.ToggleAccounts
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.ToggleAllDay
+import v.sivasubramaniam.calendar.feature_reminder.presentation.ReminderEvent.ToggleRepetition
 import v.sivasubramaniam.calendar.feature_reminder.presentation.components.AccountItem
 import v.sivasubramaniam.calendar.feature_reminder.presentation.components.RepetitionItem
-import java.util.*
+import java.lang.System.currentTimeMillis
 
 @Composable
 fun NewReminderScreen(
@@ -51,11 +80,6 @@ fun NewReminderScreen(
     }
 
     val context = LocalContext.current
-    val calendar = Calendar.getInstance()
-
-    val year = calendar[Calendar.YEAR]
-    val month = calendar[Calendar.MONTH]
-    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
 
     val datePicker = DatePickerDialog(
         context,
@@ -63,13 +87,10 @@ fun NewReminderScreen(
             viewModel.onEvent(
                 PickedDate(selectedYear, selectedMonth, selectedDayOfMonth)
             )
-        }, year, month, dayOfMonth
+        }, reminderState.year, reminderState.month, reminderState.dayOfMonth
     )
 
-    datePicker.datePicker.minDate = calendar.timeInMillis
-
-    val hourOfDay = calendar[Calendar.HOUR_OF_DAY]
-    val minute = calendar[Calendar.MINUTE]
+    datePicker.datePicker.minDate = currentTimeMillis() - 1000
 
     val timePicker = TimePickerDialog(
         context,
@@ -77,7 +98,7 @@ fun NewReminderScreen(
             viewModel.onEvent(
                 PickedTime(selectedHour, selectedMinute)
             )
-        }, hourOfDay, minute, false
+        }, reminderState.hour, reminderState.minute, false
     )
 
     Scaffold(
@@ -236,12 +257,12 @@ fun NewReminderScreen(
                     .padding(start = 60.dp, top = 10.dp, end = 16.dp, bottom = 10.dp)
             ) {
                 Text(
-                    text = "${reminderState.dayOfMonth}/${reminderState.month + 1}/${reminderState.year}",
+                    text = reminderState.dateString,
                 )
                 if (!reminderState.allDay) {
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = "${reminderState.hour}:${reminderState.minute}",
+                        text = reminderState.timeString,
                         modifier = Modifier.clickable { timePicker.show() }
                     )
                 }

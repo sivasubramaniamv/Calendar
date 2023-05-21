@@ -1,27 +1,19 @@
 package v.sivasubramaniam.calendar.feature_reminder.data.database
 
-import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import v.sivasubramaniam.calendar.feature_reminder.data.remote.dto.ReminderResponse
+import v.sivasubramaniam.calendar.feature_reminder.data.database.entity.ReminderEntity
 
-@Dao
 interface ReminderDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertReminders(reminders: List<ReminderResponse>)
+    suspend fun insertReminder(reminder: ReminderEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createReminder(reminder: ReminderResponse)
+    suspend fun insertReminders(reminders: List<ReminderEntity>)
 
-    @Query("SELECT * FROM reminder_table ORDER BY id DESC")
-    fun readReminders(): Flow<List<ReminderResponse>>
+    suspend fun getReminder(id: String): ReminderEntity
 
-    @Query("SELECT * from reminder_table WHERE id = :id")
-    suspend fun readReminder(id: Int): ReminderResponse
+    fun getReminders(): Flow<List<ReminderEntity>>
 
-    @Update
-    suspend fun updateReminder(reminder: ReminderResponse)
+    suspend fun updateReminder(reminder: ReminderEntity)
 
-    @Delete
-    suspend fun deleteReminder(reminder: ReminderResponse)
+    suspend fun deleteReminder(reminder: ReminderEntity)
 }

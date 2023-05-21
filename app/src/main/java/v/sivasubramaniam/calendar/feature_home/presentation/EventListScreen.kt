@@ -101,6 +101,7 @@ fun EventListScreen(
                     modifier = Modifier
                         .size(32.dp)
                         .clip(CircleShape)
+                        .clickable { }
                 )
             }
         },

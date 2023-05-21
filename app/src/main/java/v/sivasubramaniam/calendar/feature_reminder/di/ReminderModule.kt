@@ -17,7 +17,7 @@ object ReminderModule {
     @Provides
     fun provideReminderUseCases(repository: ReminderRepository): ReminderUseCases {
         return ReminderUseCases(
-            populateReminders = PopulateReminders(repository),
+            fetchReminders = FetchReminders(repository),
             addReminder = AddReminder(repository),
             getReminders = GetReminders(repository),
             getReminder = GetReminder(repository),
@@ -28,6 +28,6 @@ object ReminderModule {
 
     @Provides
     fun provideReminderRepository(service: ReminderServiceImpl, database: CalendarDb): ReminderRepository {
-        return ReminderRepositoryImpl(service, database)
+        return ReminderRepositoryImpl(service, database.reminderDaoImpl)
     }
 }

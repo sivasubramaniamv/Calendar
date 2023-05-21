@@ -1,16 +1,15 @@
 package v.sivasubramaniam.calendar.feature_reminder.data.remote
 
-import io.ktor.http.*
-import v.sivasubramaniam.calendar.feature_reminder.data.remote.dto.ReminderRequest
-import v.sivasubramaniam.calendar.feature_reminder.data.remote.dto.ReminderResponse
+import v.sivasubramaniam.calendar.core.data.dto.response.BasicApiResponse
+import v.sivasubramaniam.calendar.feature_reminder.data.remote.dto.ReminderDto
 
 interface ReminderService {
 
-    suspend fun postReminder(reminder: ReminderRequest): ReminderResponse?
+    suspend fun postReminder(reminder: ReminderDto): BasicApiResponse<ReminderDto>
 
-    suspend fun getReminders(): List<ReminderResponse>
+    suspend fun getReminders(): List<ReminderDto>
 
-    suspend fun putReminder(reminder: ReminderResponse): HttpStatusCode
+    suspend fun putReminder(reminder: ReminderDto): BasicApiResponse<Unit>
 
-    suspend fun deleteReminder(reminder: ReminderResponse): HttpStatusCode
+    suspend fun deleteReminder(reminder: ReminderDto): BasicApiResponse<Unit>
 }
